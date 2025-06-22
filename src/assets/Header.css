@@ -1,0 +1,128 @@
+.header {
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0.75rem 2rem;
+}
+.login-mobile {
+  display: none;
+}
+
+
+.navbar {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.logo {
+  height: 40px;
+}
+
+/* Hamburger styles */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+  margin-left: auto;
+  z-index: 1001;
+}
+
+.hamburger .bar {
+  width: 25px;
+  height: 3px;
+  background-color: #1f2d3d;
+  transition: all 0.4s ease;
+}
+
+/* Hamburger active state */
+.hamburger.active .bar:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active .bar:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Nav links */
+.navbar-nav {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  margin: 0;
+}
+
+.navbar-nav li a {
+  text-decoration: none;
+  color: #1f2d3d;
+  font-weight: 500;
+}
+
+.navbar-nav li a.active {
+  color: #00d9a0;
+}
+
+.login-btn {
+  border: 2px solid #00d9a0;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  color: #00d9a0;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* ========== Mobile ========== */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
+  }
+
+  .navbar-nav {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem 0;
+    text-align: center;
+    background-color: #fff;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .navbar-nav.open {
+    display: flex;
+  }
+
+  .navbar-right {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Hide desktop login button on mobile */
+@media (max-width: 768px) {
+  .navbar-right {
+    display: none;
+  }
+
+  .navbar-nav .login-mobile {
+    display: block;
+    margin-top: 1rem;
+  }
+}

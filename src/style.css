@@ -6,6 +6,19 @@
   font-family: 'Arial', sans-serif;
   text-decoration: none;
 }
+html, body, #root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.bloodtesttube,
+.how-it-works-box,
+.UploadBox {
+  width: 100%;
+  max-width: 1300px;
+  margin: auto;
+}
 
 body {
   background-color: #e9eff3;
@@ -374,4 +387,31 @@ input[type="file"] {
 
 .follow-up-answer-box {
   max-height: 250px;
+}
+
+@media (max-width: 768px) {
+  .navbar-nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .bloodtesttube {
+    flex-direction: column;
+  }
+
+  .step-box {
+    max-width: 90%;
+  }
+
+  .follow-up-input {
+    width: 100%;
+    margin-right: 0;
+  }
 }
