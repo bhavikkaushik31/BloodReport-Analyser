@@ -1,4 +1,4 @@
-
+/* ========== Global Reset ========== */
 * {
   margin: 0;
   padding: 0;
@@ -6,29 +6,30 @@
   font-family: 'Arial', sans-serif;
   text-decoration: none;
 }
+
 html, body, #root {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+  background-color: #e9eff3;
 }
 
-.bloodtesttube,
-.how-it-works-box,
-.UploadBox {
+/* ========== Containers ========== */
+.bloodtesttube
+ {
   width: 100%;
   max-width: 1300px;
   margin: auto;
 }
 
-body {
-  background-color: #e9eff3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0;
-  padding: 0;
+.how-it-works-box,
+.UploadBox {
+  width: 85%;
+  max-width: 1300px;
+  margin: auto;
 }
 
+/* ========== Blood Test Tube Section ========== */
 .bloodtesttube {
   display: flex;
   align-items: center;
@@ -36,13 +37,13 @@ body {
   gap: 40px;
   padding: 40px;
   background-color: #e9f1f4;
-  flex-wrap: nowrap; /* Ensures side-by-side on large screens */
+  flex-wrap: nowrap;
+  flex-direction: row;
 }
 
 .bloodtesttube img {
   height: 200px;
   width: auto;
-  margin: 0;
   flex-shrink: 0;
 }
 
@@ -53,7 +54,6 @@ body {
 
 .bloodtesttube h2 {
   font-size: 2rem;
-  margin: 0;
   font-weight: bold;
   color: #000;
   text-align: left;
@@ -64,14 +64,12 @@ body {
   font-weight: bold;
 }
 
-
-/* =================== How It Works =================== */
+/* ========== How It Works Section ========== */
 .how-it-works-box {
   border: 2px solid #e0e0e0;
   border-radius: 40px;
   padding: 30px;
   margin: 40px 10px;
-  max-width: 1100px;
   background-color: #f9fdfd;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
@@ -132,23 +130,23 @@ body {
   color: #444;
 }
 
-
-/* =================== Upload Section =================== */
+/* ========== Upload Section ========== */
 .UploadBox {
   border: 2px solid #e0e0e0;
   border-radius: 40px;
-  padding: 6px;
-  margin: 40px 10px;
-  max-width: 1100px;
+  padding: 5px;
+  padding-bottom: 50px;
+  margin: 40px 10px 4rem;
   background-color: #f9fdfd;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  margin-bottom: 4rem;
+
 }
 
 .Upload h2 {
   font-size: 2rem;
   text-align: center;
   margin: 20px 0;
+  margin-top: 30px;
 }
 
 #drop-zone {
@@ -161,7 +159,6 @@ body {
   transition: background-color 0.3s;
   max-width: 400px;
   margin: 0 auto 10px;
-  
 }
 
 #drop-zone.dragover {
@@ -200,7 +197,6 @@ input[type="file"] {
   border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
-  margin-top: 1px;
   transition: background-color 0.3s;
 }
 
@@ -214,21 +210,19 @@ input[type="file"] {
 }
 
 .spinner {
-  margin: 0 auto;
   width: 40px;
   height: 40px;
   border: 4px solid #f3f3f3;
   border-top: 4px solid #05294e;
   border-radius: 50%;
   animation: spin 1s linear infinite;
+  margin: auto;
 }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
-
 
 .analysis-section {
   display: flex;
@@ -239,13 +233,11 @@ input[type="file"] {
 
 #result-box {
   width: 90%;
-  background-color: #cfe8fc; 
+  background-color: #cfe8fc;
   padding: 20px;
   border: 2px solid #004080;
   border-radius: 12px;
-  margin-top: 20px;
-  margin-left: 65px;
-  margin-right: 65px;
+  margin: 20px auto 0;
 }
 
 #result-box h2 {
@@ -257,7 +249,7 @@ input[type="file"] {
   background-color: white;
   padding: 15px;
   min-height: 200px;
-  max-height: 400px; 
+  max-height: 400px;
   overflow-y: auto;
   border-radius: 8px;
   border: 1px solid #ccc;
@@ -267,151 +259,180 @@ input[type="file"] {
   margin-top: 10px;
 }
 
-
-.follow-up-section {
-  width: 90%;
-  max-width: 950px;
-  margin: 10px auto 30px;
-  padding: 20px;
+/* Chat Section(BhaviK)*/
+.chat-container {
+  margin-top: 2rem;
+  border: 2px solid #003366;
+  border-radius: 10px;
   background-color: #d5eafb;
-  border-radius: 20px;
-  border: 2px solid #05294e;
-  box-sizing: border-box;
+  overflow: hidden;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
 }
 
-.follow-up-section h3 {
-  margin-bottom: 0.5rem;
-  color: #003366;
-  font-size: 1.5rem;
-}
-
-.follow-up-input {
-  width: 60%;
-  padding: 0.5rem;
-  margin-right: 1rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.follow-up-button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
+.chat-header {
   background-color: #003366;
   color: white;
-  border: none;
-  border-radius: 20px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.follow-up-button:hover {
-  background-color: #005792;
+.chat-header span {
+  font-weight: bold;
 }
 
-.follow-up-button:disabled {
-  background-color: #005792;
-  cursor: not-allowed;
+.minimize-chat {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
 }
 
-.follow-up-answer-box {
-  margin-top: 20px;
-  background-color: #ffffff;
+.chat-messages {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.message {
+  max-width: 80%;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.message.user {
+  align-self: flex-end;
+  background-color: #00b38f;
+
+  color: white;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.message.bot {
+  align-self: flex-start;
+  background-color: #f0f0f0;
+  color: #333;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.message.thinking {
+  color: #666;
+  font-style: italic;
+}
+
+.chat-input-area {
+  display: flex;
+  padding: 0.75rem;
+  border-top: 1px solid #b3d9ff;
+  background-color: white;
+}
+
+.chat-input-area textarea {
+  flex: 1;
   border: 1px solid #ccc;
-  padding: 15px;
-  border-radius: 8px;
-  max-height: 300px;  
+  border-radius: 1.5rem;
+  padding: 0.75rem 1rem;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  max-height: 120px;
   overflow-y: auto;
 }
 
-
-.follow-up-answer {
-  white-space: pre-wrap;
-  word-break: break-word;
-  line-height: 1.5;
+.send-question {
+  background-color: #003366;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
 }
 
-/* =================== Mobile Responsive =================== */
-.bloodtesttube {
-  
-  text-align: center;
-  padding: 10px;
+.send-question:hover {
+  background-color: #005792;
 }
 
-.bloodtesttube img {
-  margin-top: 2rem;
-  height: 200px;
+.timestamp {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.25rem;
+  text-align: right;
 }
 
-.bloodtesttube h2 {
-  margin-top: 2rem;
-  font-size: 1.5rem;
-  padding: 10px 0;
-}
-
-.how-it-works h2 {
-  font-size: 1.5rem;
-}
-
-.how-it-works p {
-  font-size: 0.95rem;
-}
-
-.step-box h5 {
-  font-size: 1.2rem;
-}
-
-.step-box h4,
-.step-box p {
-  font-size: 0.9rem;
-}
-
-#result-box {
-  margin: 20px auto;
-  padding: 15px;
-}
-
-#result-text {
-  min-height: 150px;
-  max-height: 300px;
-}
-
-.follow-up-section {
-  padding: 15px;
-}
-
-.follow-up-input {
-  width: 100%;
-  margin: 10px 0;
-}
-
-.follow-up-answer-box {
-  max-height: 250px;
-}
-
+/* ========== Responsive ========== */
 @media (max-width: 768px) {
-  .navbar-nav {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
   .bloodtesttube {
     flex-direction: column;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .bloodtesttube img {
+    margin-top: 2rem;
+  }
+
+  .bloodtesttube h2 {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .how-it-works h2 {
+    font-size: 1.5rem;
+  }
+
+  .how-it-works p,
+  .step-box h4,
+  .step-box p {
+    font-size: 0.9rem;
   }
 
   .step-box {
     max-width: 90%;
   }
 
-  .follow-up-input {
-    width: 100%;
-    margin-right: 0;
+  #result-box {
+    margin: 20px auto;
+    padding: 15px;
+  }
+
+  #result-text {
+    min-height: 150px;
+    max-height: 300px;
+  }
+
+  .chat-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 70vh;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius:0;
+    margin-top: 0;
+    z-index: 1000;
+  }
+
+  .chat-messages {
+    max-height: 50vh;
   }
 }

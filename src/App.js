@@ -1,4 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
 import Header from './Header';
 import Footer from './Footer';
@@ -16,32 +18,52 @@ const formatGeminiOutput = (text) => {
 
 const App = () => {
   const uploadBoxRef = useRef(null);
+  const chatMessagesEndRef = useRef(null);
+
   const [followUpQuestion, setFollowUpQuestion] = useState('');
   const [followUpAnswer, setFollowUpAnswer] = useState('');
   const [loading, setLoading] = useState(false);
   const [originalText, setOriginalText] = useState('');
   const [analysisText, setAnalysisText] = useState('');
 
-  const handleFollowUp = async () => {
-    const question = followUpQuestion.trim();
-    if (!question || !originalText || !analysisText) {
-      alert('Please analyze a report and enter a question.');
-      return;
-    }
+  const [isChatMinimized, setIsChatMinimized] = useState(false);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [userInput, setUserInput] = useState('');
+
+  const handleSendMessage = async () => {
+    const question = userInput.trim();
+    if (!question || !originalText || !analysisText) return;
+
+    const newMessage = {
+      id: Date.now(),
+      text: question,
+      sender: 'user',
+      timestamp: new Date().toLocaleTimeString(),
+    };
+
+    setChatMessages((prev) => [...prev, newMessage]);
+    setUserInput('');
+    setLoading(true);
 
     try {
-      setLoading(true);
       const response = await fetch('/followup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ originalText, analysis: analysisText, question }),
       });
-
       const data = await response.json();
-      setFollowUpAnswer(formatGeminiOutput(data.answer || 'No answer received.'));
+
+      const replyMessage = {
+        id: Date.now() + 1,
+        text: data.answer || 'No answer received.',
+        sender: 'bot',
+        timestamp: new Date().toLocaleTimeString(),
+      };
+
+      setChatMessages((prev) => [...prev, replyMessage]);
     } catch (err) {
-      alert('Failed to get answer');
       console.error(err);
+      alert('Error getting response');
     } finally {
       setLoading(false);
     }
@@ -136,90 +158,116 @@ const App = () => {
     <>
       <Header />
       <main style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <div className="bloodtesttube">
-        <img src="/static/blood-test.front.png" alt="Blood Test" />
-        <div className="bloodtext">
-          <h2>Your Blood Insights, <span className="highlightword">Simplified</span>.</h2>
+        <div className="bloodtesttube">
+          <img src="/static/blood-test.front.png" alt="Blood Test" />
+          <div className="bloodtext">
+            <h2>Your Blood Insights, <span className="highlightword">Simplified</span>.</h2>
+          </div>
         </div>
-      </div>
 
-      <section className="how-it-works-box">
-        <section className="how-it-works">
-          <h2>How It Works</h2>
-          <p>Unlock insights from your blood tests in three easy steps: upload, analyze, and understand.</p>
-          <div className="steps-container">
-            {[
-              { img: "bloodtube.png", title: "Upload Your Blood Report" },
-              { img: "AiRObot.png", title: "Analysis by AI" },
-              { img: "report-icon.png", title: "Receive Your Report" }
-            ].map((step, i) => (
-              <div className="step-box" key={i}>
-                <h5>{`0${i + 1}`}</h5>
-                <img src={`/static/${step.img}`} height="100" alt={`Step ${i + 1}`} />
-                <h4>{step.title}</h4>
-                <p>{[
-                  "Upload your blood report to our platform.",
-                  "Our advanced AI immediately analyzes your results.",
-                  "Receive a detailed report with recommendations."
-                ][i]}</p>
-              </div>
-            ))}
-          </div>
+        <section className="how-it-works-box">
+          <section className="how-it-works">
+            <h2>How It Works</h2>
+            <p>Unlock insights from your blood tests in three easy steps: upload, analyze, and understand.</p>
+            <div className="steps-container">
+              {[
+                { img: "bloodtube.png", title: "Upload Your Blood Report" },
+                { img: "AiRObot.png", title: "Analysis by AI" },
+                { img: "report-icon.png", title: "Receive Your Report" }
+              ].map((step, i) => (
+                <div className="step-box" key={i}>
+                  <h5>{`0${i + 1}`}</h5>
+                  <img src={`/static/${step.img}`} height="100" alt={`Step ${i + 1}`} />
+                  <h4>{step.title}</h4>
+                  <p>{[
+                    "Upload your blood report to our platform.",
+                    "Our advanced AI immediately analyzes your results.",
+                    "Receive a detailed report with recommendations."
+                  ][i]}</p>
+                </div>
+              ))}
+            </div>
+          </section>
         </section>
-      </section>
 
-      <section className="UploadBox" ref={uploadBoxRef}>
-        <div className="Upload"><h2>Upload Blood Report Here</h2></div>
-        <form id="upload-form" encType="multipart/form-data">
-          <div id="drop-zone">
-            <label htmlFor="file">
-              <img id="uploadIcon" src="/static/upload.png" height="40" alt="Upload" style={{ cursor: 'pointer' }} />
-            </label>
-            <input type="file" id="file" name="file" style={{ display: 'none' }} />
-            <p id="drop-text">Drag or Click to Select Your File</p>
-            <p id="file-name"><span id="file-label"></span><span id="clear-file" title="Remove file">&times;</span></p>
-          </div>
-          <br />
-          <button id="btn1" type="submit">Analyze Report</button>
-          <div id="loader" className="loader-container" style={{ display: 'none' }}>
-            <div className="spinner"></div>
-          </div>
-        </form>
+        <section className="UploadBox" ref={uploadBoxRef}>
+          <div className="Upload"><h2>Upload Blood Report Here</h2></div>
+          <form id="upload-form" encType="multipart/form-data">
+            <div id="drop-zone">
+              <label htmlFor="file">
+                <img id="uploadIcon" src="/static/upload.png" height="40" alt="Upload" style={{ cursor: 'pointer' }} />
+              </label>
+              <input type="file" id="file" name="file" style={{ display: 'none' }} />
+              <p id="drop-text">Drag or Click to Select Your File</p>
+              <p id="file-name"><span id="file-label"></span><span id="clear-file" title="Remove file">&times;</span></p>
+            </div>
+            <br />
+            <button id="btn1" type="submit">Analyze Report</button>
+            <div id="loader" className="loader-container" style={{ display: 'none' }}>
+              <div className="spinner"></div>
+            </div>
+          </form>
 
-        <section className="analysis-section">
-          <div id="result-box">
-            <h2>Result</h2>
-            <div id="result-text" className="result-text"></div>
-          </div>
+          <section className="analysis-section">
+            <div id="result-box">
+              <h2>Result</h2>
+              <div id="result-text" className="result-text"></div>
+            </div>
 
-          <div className="follow-up-section">
-            <h3>Ask a Follow-Up Question</h3>
-            <input
-              id="followUpInput"
-              placeholder="Ask Your Question About The Result Here"
-              value={followUpQuestion}
-              onChange={(e) => {
-                setFollowUpQuestion(e.target.value);
-                e.target.style.height = 'auto';
-                e.target.style.height = `${e.target.scrollHeight}px`;
-              }}
-              className="follow-up-input"
-              rows={1}
-            />
-            <button onClick={handleFollowUp} disabled={loading} className="follow-up-button">
-              {loading ? 'Asking...' : 'Ask'}
-            </button>
+            {analysisText && (
+              <div className={`chat-container ${isChatMinimized ? 'minimized' : ''}`}>
+                <div className="chat-header" onClick={() => setIsChatMinimized(!isChatMinimized)}>
+                  <span>Follow-up Questions</span>
+                  <button className="minimize-chat">
+                  <FontAwesomeIcon icon={isChatMinimized ? faPlus : faMinus} />
+                  </button>
+                </div>
 
-            {followUpAnswer && (
-              <div className="follow-up-answer-box">
-                <h4>Answer:</h4>
-                <p className="follow-up-answer" dangerouslySetInnerHTML={{ __html: followUpAnswer }}></p>
+                {!isChatMinimized && (
+                  <>
+                    <div className="chat-messages">
+                      {chatMessages.map((message) => (
+                        <div key={message.id} className={`message ${message.sender}`}>
+                          <div dangerouslySetInnerHTML={{ __html: formatGeminiOutput(message.text) }} />
+                          <div className="timestamp">{message.timestamp}</div>
+                        </div>
+                      ))}
+                      <div ref={chatMessagesEndRef} />
+                    </div>
+
+                    <div className="chat-input-area">
+                      <textarea
+                        value={userInput}
+                        onChange={(e) => {
+                          setUserInput(e.target.value);
+                          e.target.style.height = 'auto';
+                          e.target.style.height = `${e.target.scrollHeight}px`;
+                        }}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            handleSendMessage();
+                          }
+                        }}
+                        placeholder="Type your question about the results here..."
+                        rows={1}
+                        disabled={loading}
+                      />
+                      <button
+                        onClick={handleSendMessage}
+                        disabled={loading || !userInput.trim()}
+                        className="send-question"
+                      >
+                        <img src="/static/send-icon.png" alt="Send" height="20" width="20" />
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             )}
-          </div>
+          </section>
         </section>
-      </section>
-  </main>
+      </main>
       <Footer />
     </>
   );
